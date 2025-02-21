@@ -28,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $stmt->execute();
 
-
     echo "
         <script>
             alert('Profile created successfully!');

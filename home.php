@@ -1,10 +1,20 @@
 <main class="container rounded-md shadow-sm">
     <header class="home-header d-flex justify-content-between rounded-full">
-        <h1 class="fw-bold">PRUFILE</h1>
+        <h1 class="fw-bold">MANAGE PROFILES</h1>
 
-        <div class="btn btn-dark my-btn fw-semibold">
-            <a href="?page=new-profile" class="text-white">Create profile</a>
+        <section class="d-flex justify-content-between align-items-center gap-3">
+            <div class="btn btn-dark my-btn fw-semibold">
+                <a href="?page=users" class="text-white">Users</a>
+            </div>
+
+            <div class="btn btn-dark my-btn fw-semibold">
+                <a href="?page=new-profile" class="text-white">Create profile</a>
+            </div>
+
+            <button onclick="onPressedLogout()" class="btn btn-light my-btn fw-semibold bg-stone-200">
+                Sign out
             </button>
+        </section>
     </header>
 
     <?php if (!empty($profiles)) : ?>
@@ -17,41 +27,42 @@
                         <th scope="col">Email</th>
                         <th scope="col">Gender</th>
                         <th scope="col">Date</th>
-                        <th scope="col">Action</th>
+                        <?php if ($isLoggedIn && $isAdmin) : ?>
+                            <th scope="col">Action</th>
+                        <?php endif ?>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    foreach ($profiles as $index => $profile) {
-                        echo <<<HTML
-                    <tr>
-                        <th scope='row'>
-                            <div class="picture">
-                            {$profile["name"][0]}
-                            </div>
-                        </th>
-                        <td>{$profile["name"]}</td>
-                        <td>{$profile["email"]}</td>
-                        <td>{$profile["gender"]}</td>
-                        <td>{$profile["createdAt"]}</td>
-                        <td>
-                            <a href="?page=detail&id={$profile['id']}" class="btn btn-warning">
-                                <svg width="20" height="20" fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path d="M2,21H8a1,1,0,0,0,0-2H3.071A7.011,7.011,0,0,1,10,13a5.044,5.044,0,1,0-3.377-1.337A9.01,9.01,0,0,0,1,20,1,1,0,0,0,2,21ZM10,5A3,3,0,1,1,7,8,3,3,0,0,1,10,5ZM20.207,9.293a1,1,0,0,0-1.414,0l-6.25,6.25a1.011,1.011,0,0,0-.241.391l-1.25,3.75A1,1,0,0,0,12,21a1.014,1.014,0,0,0,.316-.051l3.75-1.25a1,1,0,0,0,.391-.242l6.25-6.25a1,1,0,0,0,0-1.414Zm-5,8.583-1.629.543.543-1.629L19.5,11.414,20.586,12.5Z"></path>
-                                    </g>
-                                </svg>
-                            </a>
-                            <button data-id="{$profile['id']}" onclick="onPressedAskDeleteConfirmation(this)" class="btn btn-danger">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 5H18M9 5V5C10.5769 3.16026 13.4231 3.16026 15 5V5M9 20H15C16.1046 20 17 19.1046 17 18V9C17 8.44772 16.5523 8 16 8H8C7.44772 8 7 8.44772 7 9V18C7 19.1046 7.89543 20 9 20Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                            </button>
-                        </td>
-                    </tr>
-                HTML;
-                    }
-                    ?>
+                    <?php foreach ($profiles as $profile) : ?>
+                        <tr>
+                            <td>
+                                <div class="picture"><?= htmlspecialchars($profile["name"][0]) ?></div>
+                            </td>
+                            <td><?= htmlspecialchars($profile["name"]) ?></td>
+                            <td><?= htmlspecialchars($profile["email"]) ?></td>
+                            <td><?= htmlspecialchars($profile["gender"]) ?></td>
+                            <td><?= htmlspecialchars($profile["createdAt"]) ?></td>
+
+                            <?php if ($isLoggedIn && $isAdmin) : ?>
+                                <td>
+                                    <a href="?page=detail&id=<?= $profile['id'] ?>" class="btn btn-warning"> <svg width="20" height="20" fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path d="M2,21H8a1,1,0,0,0,0-2H3.071A7.011,7.011,0,0,1,10,13a5.044,5.044,0,1,0-3.377-1.337A9.01,9.01,0,0,0,1,20,1,1,0,0,0,2,21ZM10,5A3,3,0,1,1,7,8,3,3,0,0,1,10,5ZM20.207,9.293a1,1,0,0,0-1.414,0l-6.25,6.25a1.011,1.011,0,0,0-.241.391l-1.25,3.75A1,1,0,0,0,12,21a1.014,1.014,0,0,0,.316-.051l3.75-1.25a1,1,0,0,0,.391-.242l6.25-6.25a1,1,0,0,0,0-1.414Zm-5,8.583-1.629.543.543-1.629L19.5,11.414,20.586,12.5Z"></path>
+                                            </g>
+                                        </svg></a>
+                                    <button data-id="<?= $profile['id'] ?>" onclick="onPressedAskDeleteConfirmation(this)" class="btn btn-danger"> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                            <g id="SVGRepo_iconCarrier">
+                                                <path d="M6 5H18M9 5V5C10.5769 3.16026 13.4231 3.16026 15 5V5M9 20H15C16.1046 20 17 19.1046 17 18V9C17 8.44772 16.5523 8 16 8H8C7.44772 8 7 8.44772 7 9V18C7 19.1046 7.89543 20 9 20Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </g>
+                                        </svg></button>
+                                </td>
+                            <?php endif; ?>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </section>
@@ -83,6 +94,14 @@
 
         if (confirm('Are you sure you want to delete this profile?')) {
             window.location.href = `?page=delete-profile&id=${id}`;
+        } else {
+            window.location.href = '/';
+        }
+    }
+
+    function onPressedLogout() {
+        if (confirm('Are you sure you want sign out?')) {
+            window.location.href = '?page=logout';
         } else {
             window.location.href = '/';
         }

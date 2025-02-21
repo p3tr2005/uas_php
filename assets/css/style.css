@@ -41,6 +41,8 @@ body {
 .my-btn {
     padding-left: 2rem;
     padding-right: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 
     border-radius: 4rem;
     display: flex;
@@ -111,4 +113,24 @@ td {
 
 .text-xl {
     font-size: 5rem;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.auth-container {
+    width: 800px;
+    height: fit-content;
+    background: white;
+    margin-left: auto;
+    margin-right: auto;
+    /* border: 1px solid gray; */
+    padding: 2rem;
+
+    margin-top: 4rem;
+}
+
+.bg-stone-200 {
+    background: #e1e1e1;
 }
